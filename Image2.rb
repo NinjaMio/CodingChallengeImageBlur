@@ -4,8 +4,6 @@ class Image
     @data = data
   end
 
-  # 2d array to array
-  # prints n strings
   def output_image
     @data.each do |row|
       puts row.join("")

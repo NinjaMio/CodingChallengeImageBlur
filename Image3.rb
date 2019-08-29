@@ -4,8 +4,6 @@ class Image
     @data = data
   end
 
-  # 2d array to array
-  # prints n strings
   def output_image
     @data.each do |row|
       puts row.join("")
@@ -28,7 +26,6 @@ class Image
     return blurred
   end
 
-  # only blurs the 4 surrouding cells, and blur again on each blurred cell until complete
   def blur_helper(d, i, j, image)
     h = image.length
     w = image.first.length
@@ -37,24 +34,28 @@ class Image
     else
       if i == 0 then
         image[1][j] = 1
-        # blur_helper(d-1, 1, j, image)
+        blur_helper(d-1, 1, j, image)
       elsif i == h-1 then
         image[h-2][j] = 1
-        # blur_helper(d-1, h-2, j, image)
+        blur_helper(d-1, h-2, j, image)
       else
         image[i-1][j] = 1
         blur_helper(d-1, i-1, j, image)
         image[i+1][j] = 1
-        # blur_helper(d-1, i+1, j, image)
+        blur_helper(d-1, i+1, j, image)
       end
 
       if j == 0 then
         image[i][1] = 1
+        blur_helper(d-1, i, 1, image)
       elsif j == w-1 then
         image[i][w-2] = 1
+        blur_helper(d-1, i, w-2, image)
       else
         image[i][j-1] = 1
+        blur_helper(d-1, i, j-1, image)
         image[i][j+1] = 1
+        blur_helper(d-1, i, j+1, image)
       end
       
     end
@@ -62,14 +63,22 @@ class Image
 end
 
 image = Image.new([
-  [0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0],
-  [0, 0, 1, 0, 0],
-  [0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0]
+  [1, 0, 0, 0, 0, 0, 0, 0, 1],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 1, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [1, 0, 0, 0, 0, 0, 0, 0, 1]
 ])
 
-blurred_data = image.blur(2)
+blurred_data = image.blur(3)
 blurred_img = Image.new(blurred_data)
 
 image.output_image
